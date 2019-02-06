@@ -15,7 +15,7 @@ namespace Paylocity.Service
 
             var employeeCost = 0.0;
             if(employeeFirstInitial.ToUpper() == "A")
-                employeeCost = 1000 * 0.1;
+                employeeCost = 1000 - 1000 * 0.1;
             else
                 employeeCost = 1000;
 
@@ -27,7 +27,7 @@ namespace Paylocity.Service
                 var dependentFirstInitial = name.Substring(0, 1);
 
                 if (dependentFirstInitial.ToUpper() == "A")
-                    dependentCost = 500 * 0.1;
+                    dependentCost = 500 - 500 * 0.1;
                 else
                     dependentCost = 500;
 
@@ -45,7 +45,12 @@ namespace Paylocity.Service
                 totalCost = totalCost + record.Cost;
             }
 
-            return totalCost;
+            return 2000 - totalCost/26;
+        }
+
+        public Double YearlySalary()
+        {
+            return 2000 * 26;
         }
 
     }
