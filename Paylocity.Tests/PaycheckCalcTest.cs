@@ -6,40 +6,57 @@ using System.Threading.Tasks;
 using NUnit.Framework;
 using Paylocity.Service;
 using Paylocity.Models;
+using Paylocity.Context;
 
 namespace Paylocity.Tests
 {
     [TestFixture]
     public class PaycheckCalcTest
     {
+        PaycheckCalc paycheckCalc = new PaycheckCalc();
+
         [Test]
         public void CalculateBenefitsCostTest()
         {
-            var paycheckCalc = new PaycheckCalc();
-
+            var context = new BenefitsContext();
+                  
             var familyList = new List<string>();
-            familyList.Add("Al");
-            familyList.Add("Judy");
-            familyList.Add("Allison");
+            familyList.Add("Az");
+            familyList.Add("Ju");
+            familyList.Add("Ay");
 
-            var list = paycheckCalc.CalculateBenefitsCost("Alfred", familyList);
-
+            var list = paycheckCalc.CalculateBenefitsCost(context, "Al", familyList);
             Assert.AreEqual(500, list[2].Cost);
+
+            var netPay = paycheckCalc.NetPay(context, "Al");
+            Assert.AreEqual(1912, netPay);
+
+            var yearlySalary = paycheckCalc.YearlySalary(context, "Al");
+            Assert.AreEqual(52000, Convert.ToInt32(yearlySalary));
         }
 
         [Test]
-        public void NetPayTest()
+        public void Seed_Database()
         {
-            var familyList = new List<FamilyList>();
-            familyList.Add(new FamilyList { Name = "Al", Cost = 900 });
-            familyList.Add(new FamilyList { Name = "Ally", Cost = 450 });
-            familyList.Add(new FamilyList { Name = "Judy", Cost = 500 });
-            familyList.Add(new FamilyList { Name = "Allison", Cost = 450 });
+            using (BenefitsContext db = new BenefitsContext())
+            {
+                var employeeFamily = new Employee()
+                {
+                    EmployeeName = "Bob",
+                    BenefitCost = 1000,
+                    Dependents = new List<Dependent>
+                    {
+                        new Dependent { DependentName = "Judy", BenefitCost = 500 },
+                        new Dependent { DependentName = "Alfred", BenefitCost = 450 },
+                        new Dependent { DependentName = "Susan", BenefitCost = 500 }
+                    }
+                };
 
-            var paycheckCalc = new PaycheckCalc();
-            var netPay = paycheckCalc.NetPay(familyList);
-
-            Assert.AreEqual(1912, Convert.ToInt32(netPay));
+                // save data to db
+                db.SaveChanges();
+                db.Dispose();
+            }
         }
     }
 }
+
