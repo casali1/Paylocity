@@ -96,5 +96,13 @@ namespace Paylocity.Service
 
             return yearlySalary;
         }
+
+        public List<Employee> GetAllEmployee(BenefitsContext context)
+        {
+            //List<Employee>();
+           var employees = context.Employees;
+
+            return employees.ToList();
+        }
     }
 }

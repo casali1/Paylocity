@@ -1,0 +1,33 @@
+﻿//The EmployeesList page lists the current data of employee on the page.
+<html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.0/angular.min.js"></script>
+    <script>
+        var app = angular.module("EmployeeApp", []);
+        app.controller("BenefitsController", function ($scope, $http) {
+
+            var getItNow = $http.get('http://localhost:61671/api/benefits');  //Hitting the controller api to retrieve data.
+
+            getItNow.success(function (data, status) {
+                $scope.employees = data;
+            })
+            getItNow.error(function (data, status) {
+                alert(status);
+            });
+        });
+    </script>
+</head>
+<body ng-app="EmployeeApp">
+    <h1>Employee List</h1>
+    <div ng-controller="BenefitsController">
+        <table ng-repeat="employee in employees" border="1">
+            <tr>
+                <td>{{ employee.EmployeeId }}</td>
+                <td>{{ employee.EmployeeName }}</td>
+                <td>{{ employee.BenefitCost }}</td>
+                <td>{{ employee.NetPay }}</td>
+            </tr>
+        </table>
+    </div>
+</body>
+</html>
