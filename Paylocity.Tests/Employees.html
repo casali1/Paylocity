@@ -1,12 +1,12 @@
 ﻿//The EmployeesList page lists the current data of employee on the page.
 <html>
 <head>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.0/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
     <script>
         var app = angular.module("EmployeeApp", []);
         app.controller("BenefitsController", function ($scope, $http) {
 
-            var getItNow = $http.get('http://localhost:61671/api/benefits');  //Hitting the controller api to retrieve data.
+            var getItNow = $http.get('http://localhost:64748/api/benefits');  //Hitting the controller api to retrieve data.
 
             getItNow.success(function (data, status) {
                 $scope.employees = data;

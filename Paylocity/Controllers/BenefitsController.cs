@@ -16,31 +16,57 @@ namespace Paylocity.Controllers
     {
         public static List<Employee> employees = new List<Employee>();
         public static BenefitsContext context = new BenefitsContext();
-        public static int PageLoadFlag = 1;
+        PaycheckCalc paycheckCalc = new PaycheckCalc();
 
-        // GET: api/Product
-        public List<Employee> GetAllProducts()
+        public List<string> GetAllProducts()
         {
-            if (PageLoadFlag == 1)
+            var employeeList = new List<string>();
+
+            employees = paycheckCalc.GetAllEmployee(context);
+
+            foreach (Employee employee in employees)
             {
-                var data = new PaycheckCalc();
-                PageLoadFlag++;
-                employees = data.GetAllEmployee(context);
-                return employees;
+                employeeList.Add(employee.EmployeeName);
             }
 
-            return employees;
+            return employeeList;
         }
 
-        //// GET: api/Product/5
-        //public IHttpActionResult GetEmployee(int id)
+        public EmployeeViewModel GetEmployee(int id)
+        {
+            var employeeRec = context.Employees.Where(e => e.EmployeeId == id).SingleOrDefault();
+
+            var employee = new EmployeeViewModel
+            {
+                EmployeeName = employeeRec.EmployeeName,
+                BenefitCost = employeeRec.BenefitCost,
+
+                Salary = employeeRec.Salary,
+                NetPay = employeeRec.NetPay,
+                TotalBenefitCosts = employeeRec.TotalBenefitCosts,
+
+                YearlySalary = employeeRec.YearlySalary,
+                YearlyTotalBenefitsCost = employeeRec.YearlyTotalBenefitsCost,
+                YearlyNetPay = employeeRec.YearlyNetPay
+            };
+
+            return employee;
+        }
+
+        //public IHttpActionResult Put(Employee employee)
         //{
-        //    var product = products.FirstOrDefault(x => x.ID == id);
-
-        //    if (product == null)
-        //        return NotFound();
-
-        //    return Ok(product);
+        //    return Ok();
         //}
+
+        public IHttpActionResult Post(List<string> familyMembers)
+        {
+            var employee = familyMembers[0];
+            familyMembers.RemoveAt(0);
+
+            paycheckCalc.CalculateBenefitsCost(context, employee, familyMembers);
+            paycheckCalc.NetPay(context, employee);
+            paycheckCalc.YearlySalary(context, employee);
+            return Ok();
+        }
     }
 }
