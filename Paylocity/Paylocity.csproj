@@ -238,7 +238,6 @@
     <Compile Include="Models\Dependent.cs" />
     <Compile Include="Models\EmployeeViewModel.cs" />
     <Compile Include="Models\Employee.cs" />
-    <Compile Include="Models\FamilyList.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Providers\ApplicationOAuthProvider.cs" />

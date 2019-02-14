@@ -13,10 +13,16 @@ namespace Paylocity.Service
         Double YearlyEmployBenefitCosts = 1000;
         Double YearlyDependBenefitCosts = 500;
 
-        public List<FamilyList> CalculateBenefitsCost(BenefitsContext context, string employeeName, List<string> familyNames)
+        public List<Employee> GetAllEmployee(BenefitsContext context)
         {
-            var famList = new List<FamilyList>();
+            //List<Employee>();
+            var employees = context.Employees;
 
+            return employees.ToList();
+        }
+
+        public void CalculateEmployeeBenefitsCost(BenefitsContext context, string employeeName)
+        {
             //Employee
             var employeeFirstInitial = employeeName.Substring(0, 1);
 
@@ -26,11 +32,12 @@ namespace Paylocity.Service
             else
                 employeeCost = YearlyEmployBenefitCosts;
 
-            famList.Add(new FamilyList { Name = employeeName, Cost = employeeCost });
-
             context.Employees.Add(new Employee { EmployeeName = employeeName, BenefitCost = employeeCost });
-            context.SaveChanges();
+            context.SaveChanges();           
+        }
 
+        public void CalculateDependentBenefitsCost(BenefitsContext context, string employeeName, List<string> familyNames)
+        {
             //Dependents
             foreach (string name in familyNames)
             {
@@ -42,25 +49,20 @@ namespace Paylocity.Service
                 else
                     dependentCost = YearlyDependBenefitCosts;
 
-                famList.Add(new FamilyList { Name = name, Cost = dependentCost });
-
                 var employeeRec = context.Employees.Where(e => e.EmployeeName == employeeName).SingleOrDefault();
                 context.Dependents.Add(new Dependent { DependentName = name, BenefitCost = dependentCost, Employee = employeeRec });
                 context.SaveChanges();
             }
-
-            return famList;
         }
 
-        public Double NetPay(BenefitsContext context, string employeeName)
+        public void CalculateTotalBenefitsCost(BenefitsContext context, string employeeName)
         {
             var yearlyTotalBenefitsCost = 0.0;
-            var netPay = 0.0;
 
             var employeeRec = context.Employees.Where(e => e.EmployeeName == employeeName).SingleOrDefault();
             if (employeeRec != null)
             {
-                yearlyTotalBenefitsCost = employeeRec.BenefitCost;
+                yearlyTotalBenefitsCost = employeeRec.BenefitCost;  //Initializing cost...starting with the employee benefit's cost.
 
                 var dependentRecords = context.Dependents.Where(e => e.Employee.EmployeeId == employeeRec.EmployeeId);
                 foreach (Dependent record in dependentRecords.ToList())
@@ -70,19 +72,26 @@ namespace Paylocity.Service
 
                 var totalBenefitsCost = Convert.ToInt32(yearlyTotalBenefitsCost / 26);
 
-                netPay = Salary - totalBenefitsCost;
-
-                employeeRec.Salary = Salary;
-                employeeRec.NetPay = netPay;
-                employeeRec.YearlyTotalBenefitsCost = yearlyTotalBenefitsCost;
                 employeeRec.TotalBenefitCosts = totalBenefitsCost;
+                employeeRec.YearlyTotalBenefitsCost = yearlyTotalBenefitsCost;               
 
                 context.SaveChanges();
             }
-            return netPay;
         }
 
-        public Double YearlySalary(BenefitsContext context, string employeeName)
+        public void CalculateSalaryInfo(BenefitsContext context, string employeeName)
+        {
+            var employeeRec = context.Employees.Where(e => e.EmployeeName == employeeName).SingleOrDefault();
+            if (employeeRec != null)
+            {
+                employeeRec.Salary = Salary;
+                employeeRec.NetPay = Salary - employeeRec.TotalBenefitCosts;
+
+                context.SaveChanges();
+            }
+        }
+
+        public void CalculateYearlySalaryInfo(BenefitsContext context, string employeeName)
         {
             var yearlySalary = Salary * 26;
 
@@ -93,16 +102,6 @@ namespace Paylocity.Service
                 employeeRec.YearlyNetPay = yearlySalary - employeeRec.YearlyTotalBenefitsCost;
                 context.SaveChanges();
             }
-
-            return yearlySalary;
-        }
-
-        public List<Employee> GetAllEmployee(BenefitsContext context)
-        {
-            //List<Employee>();
-           var employees = context.Employees;
-
-            return employees.ToList();
         }
     }
 }

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Paylocity.Models;
 using Paylocity.Service;
@@ -39,11 +36,11 @@ namespace Paylocity.Controllers
             var employee = new EmployeeViewModel
             {
                 EmployeeName = employeeRec.EmployeeName,
-                BenefitCost = employeeRec.BenefitCost,
+                YearlyEmployeeBenefitCost = employeeRec.BenefitCost,
 
-                Salary = employeeRec.Salary,
-                NetPay = employeeRec.NetPay,
-                TotalBenefitCosts = employeeRec.TotalBenefitCosts,
+                WeeklySalary = employeeRec.Salary,              
+                WeeklyTotalBenefitCosts = employeeRec.TotalBenefitCosts,
+                WeeklyNetPay = employeeRec.NetPay,
 
                 YearlySalary = employeeRec.YearlySalary,
                 YearlyTotalBenefitsCost = employeeRec.YearlyTotalBenefitsCost,
@@ -63,9 +60,11 @@ namespace Paylocity.Controllers
             var employee = familyMembers[0];
             familyMembers.RemoveAt(0);
 
-            paycheckCalc.CalculateBenefitsCost(context, employee, familyMembers);
-            paycheckCalc.NetPay(context, employee);
-            paycheckCalc.YearlySalary(context, employee);
+            paycheckCalc.CalculateEmployeeBenefitsCost(context, employee);
+            paycheckCalc.CalculateDependentBenefitsCost(context, employee, familyMembers);
+            paycheckCalc.CalculateTotalBenefitsCost(context, employee);
+            paycheckCalc.CalculateSalaryInfo(context, employee);
+            paycheckCalc.CalculateYearlySalaryInfo(context, employee);
             return Ok();
         }
     }
