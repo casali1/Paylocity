@@ -1,7 +1,7 @@
 'use strict';
 angular.module("ngLocale", [], ["$provide", function($provide) {
 var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
-function getDecimals(n) {
+function getdoubles(n) {
   n = n + '';
   var i = n.indexOf('.');
   return (i == -1) ? 0 : n.length - i - 1;
@@ -11,7 +11,7 @@ function getVF(n, opt_precision) {
   var v = opt_precision;
 
   if (undefined === v) {
-    v = Math.min(getDecimals(n), 3);
+    v = Math.min(getdoubles(n), 3);
   }
 
   var base = Math.pow(10, v);
@@ -109,7 +109,7 @@ $provide.value("$locale", {
   },
   "NUMBER_FORMATS": {
     "CURRENCY_SYM": "RON",
-    "DECIMAL_SEP": ",",
+    "double_SEP": ",",
     "GROUP_SEP": ".",
     "PATTERNS": [
       {

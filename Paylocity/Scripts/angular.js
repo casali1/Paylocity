@@ -8216,9 +8216,9 @@ function $TemplateCacheProvider() {
  *
  * @knownIssue
  *
- * ### Double Compilation
+ * ### double Compilation
  *
-   Double compilation occurs when an already compiled part of the DOM gets
+   double compilation occurs when an already compiled part of the DOM gets
    compiled again. This is an undesired effect and can lead to misbehaving directives, performance issues,
    and memory leaks. Refer to the Compiler Guide {@link guide/compiler#double-compilation-and-how-to-avoid-it
    section on double compilation} for an in-depth explanation and ways to avoid it.
@@ -14392,10 +14392,10 @@ function parseAbsoluteUrl(absoluteUrl, locationObj) {
   locationObj.$$port = toInt(parsedUrl.port) || DEFAULT_PORTS[parsedUrl.protocol] || null;
 }
 
-var DOUBLE_SLASH_REGEX = /^\s*[\\/]{2,}/;
+var double_SLASH_REGEX = /^\s*[\\/]{2,}/;
 function parseAppUrl(url, locationObj, html5Mode) {
 
-  if (DOUBLE_SLASH_REGEX.test(url)) {
+  if (double_SLASH_REGEX.test(url)) {
     throw $locationMinErr('badpath', 'Invalid url "{0}".', url);
   }
 
@@ -22336,7 +22336,7 @@ function getTypeForFilter(val) {
 }
 
 var MAX_DIGITS = 22;
-var DECIMAL_SEP = '.';
+var double_SEP = '.';
 var ZERO_CHAR = '0';
 
 /**
@@ -22350,7 +22350,7 @@ var ZERO_CHAR = '0';
  *
  * @param {number} amount Input to filter.
  * @param {string=} symbol Currency symbol or identifier to be displayed.
- * @param {number=} fractionSize Number of decimal places to round the amount to, defaults to default max fraction size for current locale
+ * @param {number=} fractionSize Number of double places to round the amount to, defaults to default max fraction size for current locale
  * @returns {string} Formatted number.
  *
  *
@@ -22409,7 +22409,7 @@ function currencyFilter($locale) {
     // if null or undefined pass it through
     return (amount == null)
         ? amount
-        : formatNumber(amount, formats.PATTERNS[1], formats.GROUP_SEP, formats.DECIMAL_SEP, fractionSize).
+        : formatNumber(amount, formats.PATTERNS[1], formats.GROUP_SEP, formats.double_SEP, fractionSize).
             replace(currencySymbolRe, currencySymbol);
   };
 }
@@ -22428,11 +22428,11 @@ function currencyFilter($locale) {
  *
  *
  * @param {number|string} number Number to format.
- * @param {(number|string)=} fractionSize Number of decimal places to round the number to.
+ * @param {(number|string)=} fractionSize Number of double places to round the number to.
  * If this is not provided then the fraction size is computed from the current locale's number
  * formatting pattern. In the case of the default locale, it will be 3.
  * @returns {string} Number rounded to `fractionSize` appropriately formatted based on the current
- *                   locale (e.g., in the en_US locale it will have "." as the decimal separator and
+ *                   locale (e.g., in the en_US locale it will have "." as the double separator and
  *                   include "," group separators after each third digit).
  *
  * @example
@@ -22476,7 +22476,7 @@ function numberFilter($locale) {
     // if null or undefined pass it through
     return (number == null)
         ? number
-        : formatNumber(number, formats.PATTERNS[0], formats.GROUP_SEP, formats.DECIMAL_SEP,
+        : formatNumber(number, formats.PATTERNS[0], formats.GROUP_SEP, formats.double_SEP,
                        fractionSize);
   };
 }
@@ -22490,7 +22490,7 @@ function numberFilter($locale) {
  * @param  {string} numStr The number to parse
  * @return {object} An object describing this number, containing the following keys:
  *  - d : an array of digits containing leading zeros as necessary
- *  - i : the number of the digits in `d` that are to the left of the decimal point
+ *  - i : the number of the digits in `d` that are to the left of the double point
  *  - e : the exponent for numbers that would need more than `MAX_DIGITS` digits in `d`
  *
  */
@@ -22498,9 +22498,9 @@ function parse(numStr) {
   var exponent = 0, digits, numberOfIntegerDigits;
   var i, j, zeros;
 
-  // Decimal point?
-  if ((numberOfIntegerDigits = numStr.indexOf(DECIMAL_SEP)) > -1) {
-    numStr = numStr.replace(DECIMAL_SEP, '');
+  // double point?
+  if ((numberOfIntegerDigits = numStr.indexOf(double_SEP)) > -1) {
+    numStr = numStr.replace(double_SEP, '');
   }
 
   // Exponential form?
@@ -22510,7 +22510,7 @@ function parse(numStr) {
     numberOfIntegerDigits += +numStr.slice(i + 1);
     numStr = numStr.substring(0, i);
   } else if (numberOfIntegerDigits < 0) {
-    // There was no decimal point or exponent so it is an integer.
+    // There was no double point or exponent so it is an integer.
     numberOfIntegerDigits = numStr.length;
   }
 
@@ -22546,7 +22546,7 @@ function parse(numStr) {
 }
 
 /**
- * Round the parsed number to the specified number of decimal places
+ * Round the parsed number to the specified number of double places
  * This function changed the parsedNumber in-place
  */
 function roundNumber(parsedNumber, fractionSize, minFrac, maxFrac) {
@@ -22613,18 +22613,18 @@ function roundNumber(parsedNumber, fractionSize, minFrac, maxFrac) {
  *           minFrac, // the minimum number of digits required in the fraction part of the number
  *           maxFrac, // the maximum number of digits required in the fraction part of the number
  *           gSize,   // number of digits in each group of separated digits
- *           lgSize,  // number of digits in the last group of digits before the decimal separator
+ *           lgSize,  // number of digits in the last group of digits before the double separator
  *           negPre,  // the string to go in front of a negative number (e.g. `-` or `(`))
  *           posPre,  // the string to go in front of a positive number
  *           negSuf,  // the string to go after a negative number (e.g. `)`)
  *           posSuf   // the string to go after a positive number
  *         }} pattern
  * @param  {string} groupSep     The string to separate groups of number (e.g. `,`)
- * @param  {string} decimalSep   The string to act as the decimal separator (e.g. `.`)
+ * @param  {string} doubleSep   The string to act as the double separator (e.g. `.`)
  * @param  {[type]} fractionSize The size of the fractional part of the number
  * @return {string}              The number formatted as a string
  */
-function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
+function formatNumber(number, pattern, groupSep, doubleSep, fractionSize) {
 
   if (!(isString(number) || isNumber(number)) || isNaN(number)) return '';
 
@@ -22644,7 +22644,7 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
     var digits = parsedNumber.d;
     var integerLen = parsedNumber.i;
     var exponent = parsedNumber.e;
-    var decimals = [];
+    var doubles = [];
     isZero = digits.reduce(function(isZero, d) { return isZero && !d; }, true);
 
     // pad zeros for small numbers
@@ -22653,11 +22653,11 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
       integerLen++;
     }
 
-    // extract decimals digits
+    // extract doubles digits
     if (integerLen > 0) {
-      decimals = digits.splice(integerLen, digits.length);
+      doubles = digits.splice(integerLen, digits.length);
     } else {
-      decimals = digits;
+      doubles = digits;
       digits = [0];
     }
 
@@ -22674,9 +22674,9 @@ function formatNumber(number, pattern, groupSep, decimalSep, fractionSize) {
     }
     formattedText = groups.join(groupSep);
 
-    // append the decimal digits
-    if (decimals.length) {
-      formattedText += decimalSep + decimals.join('');
+    // append the double digits
+    if (doubles.length) {
+      formattedText += doubleSep + doubles.join('');
     }
 
     if (exponent) {
@@ -26779,11 +26779,11 @@ function isNumberInteger(num) {
   return (num | 0) === num;
 }
 
-function countDecimals(num) {
+function countdoubles(num) {
   var numString = num.toString();
-  var decimalSymbolIndex = numString.indexOf('.');
+  var doubleSymbolIndex = numString.indexOf('.');
 
-  if (decimalSymbolIndex === -1) {
+  if (doubleSymbolIndex === -1) {
     if (-1 < num && num < 1) {
       // It may be in the exponential notation format (`1e-X`)
       var match = /e-(\d+)$/.exec(numString);
@@ -26796,7 +26796,7 @@ function countDecimals(num) {
     return 0;
   }
 
-  return numString.length - decimalSymbolIndex - 1;
+  return numString.length - doubleSymbolIndex - 1;
 }
 
 function isValidForStep(viewValue, stepBase, step) {
@@ -26811,12 +26811,12 @@ function isValidForStep(viewValue, stepBase, step) {
   // Due to limitations in Floating Point Arithmetic (e.g. `0.3 - 0.2 !== 0.1` or
   // `0.5 % 0.1 !== 0`), we need to convert all numbers to integers.
   if (isNonIntegerValue || isNonIntegerStepBase || isNonIntegerStep) {
-    var valueDecimals = isNonIntegerValue ? countDecimals(value) : 0;
-    var stepBaseDecimals = isNonIntegerStepBase ? countDecimals(stepBase) : 0;
-    var stepDecimals = isNonIntegerStep ? countDecimals(step) : 0;
+    var valuedoubles = isNonIntegerValue ? countdoubles(value) : 0;
+    var stepBasedoubles = isNonIntegerStepBase ? countdoubles(stepBase) : 0;
+    var stepdoubles = isNonIntegerStep ? countdoubles(step) : 0;
 
-    var decimalCount = Math.max(valueDecimals, stepBaseDecimals, stepDecimals);
-    var multiplier = Math.pow(10, decimalCount);
+    var doubleCount = Math.max(valuedoubles, stepBasedoubles, stepdoubles);
+    var multiplier = Math.pow(10, doubleCount);
 
     value = value * multiplier;
     stepBase = stepBase * multiplier;
@@ -36071,7 +36071,7 @@ publishExternalAPI(angular);
 
 angular.module("ngLocale", [], ["$provide", function($provide) {
 var PLURAL_CATEGORY = {ZERO: "zero", ONE: "one", TWO: "two", FEW: "few", MANY: "many", OTHER: "other"};
-function getDecimals(n) {
+function getdoubles(n) {
   n = n + '';
   var i = n.indexOf('.');
   return (i == -1) ? 0 : n.length - i - 1;
@@ -36081,7 +36081,7 @@ function getVF(n, opt_precision) {
   var v = opt_precision;
 
   if (undefined === v) {
-    v = Math.min(getDecimals(n), 3);
+    v = Math.min(getdoubles(n), 3);
   }
 
   var base = Math.pow(10, v);
@@ -36179,7 +36179,7 @@ $provide.value("$locale", {
   },
   "NUMBER_FORMATS": {
     "CURRENCY_SYM": "$",
-    "DECIMAL_SEP": ".",
+    "double_SEP": ".",
     "GROUP_SEP": ",",
     "PATTERNS": [
       {

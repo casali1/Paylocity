@@ -91,7 +91,7 @@ $provide.value("$locale", {
   },
   "NUMBER_FORMATS": {
     "CURRENCY_SYM": "din",
-    "DECIMAL_SEP": ",",
+    "double_SEP": ",",
     "GROUP_SEP": "\u00a0",
     "PATTERNS": [
       {

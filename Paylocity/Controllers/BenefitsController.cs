@@ -15,7 +15,7 @@ namespace Paylocity.Controllers
         public static BenefitsContext context = new BenefitsContext();
         PaycheckCalc paycheckCalc = new PaycheckCalc();
 
-        public List<string> GetAllProducts()
+        public List<string> GetAllEmployees()
         {
             var employeeList = new List<string>();
 
@@ -61,9 +61,14 @@ namespace Paylocity.Controllers
             familyMembers.RemoveAt(0);
 
             paycheckCalc.CalculateEmployeeBenefitsCost(context, employee);
+
+
             paycheckCalc.CalculateDependentBenefitsCost(context, employee, familyMembers);
+
             paycheckCalc.CalculateTotalBenefitsCost(context, employee);
+
             paycheckCalc.CalculateSalaryInfo(context, employee);
+
             paycheckCalc.CalculateYearlySalaryInfo(context, employee);
             return Ok();
         }

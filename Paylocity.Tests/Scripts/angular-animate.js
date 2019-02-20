@@ -730,7 +730,7 @@ var ANIMATE_TIMER_KEY = '$$animateCss';
  */
 var ONE_SECOND = 1000;
 
-var ELAPSED_TIME_MAX_DECIMAL_PLACES = 3;
+var ELAPSED_TIME_MAX_double_PLACES = 3;
 var CLOSING_TIME_BUFFER = 1.5;
 
 var DETECT_CSS_PROPERTIES = {
@@ -1303,7 +1303,7 @@ var $AnimateCssProvider = ['$animateProvider', /** @this */ function($animatePro
 
         /* Firefox (or possibly just Gecko) likes to not round values up
          * when a ms measurement is used for the animation */
-        var elapsedTime = parseFloat(ev.elapsedTime.toFixed(ELAPSED_TIME_MAX_DECIMAL_PLACES));
+        var elapsedTime = parseFloat(ev.elapsedTime.toFixed(ELAPSED_TIME_MAX_double_PLACES));
 
         /* $manualTimeStamp is a mocked timeStamp value which is set
          * within browserTrigger(). This is only here so that tests can
