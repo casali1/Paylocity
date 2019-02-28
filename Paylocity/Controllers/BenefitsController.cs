@@ -12,14 +12,13 @@ namespace Paylocity.Controllers
     public class BenefitsController : ApiController
     {
         public static List<Employee> employees = new List<Employee>();
-        public static BenefitsContext context = new BenefitsContext();
         PaycheckCalc paycheckCalc = new PaycheckCalc();
 
         public List<string> GetAllEmployees()
         {
             var employeeList = new List<string>();
 
-            employees = paycheckCalc.GetAllEmployee(context);
+            employees = paycheckCalc.GetAllEmployee();
 
             foreach (Employee employee in employees)
             {
@@ -29,9 +28,9 @@ namespace Paylocity.Controllers
             return employeeList;
         }
 
-        public EmployeeViewModel GetEmployee(int id)
+        public EmployeeViewModel GetEmployee(int ID)
         {
-            var employeeRec = context.Employees.Where(e => e.EmployeeId == id).SingleOrDefault();
+            var employeeRec = paycheckCalc.GetEmployeeById(ID);
 
             var employee = new EmployeeViewModel
             {
@@ -60,16 +59,16 @@ namespace Paylocity.Controllers
             var employee = familyMembers[0];
             familyMembers.RemoveAt(0);
 
-            paycheckCalc.CalculateEmployeeBenefitsCost(context, employee);
+            paycheckCalc.CalculateEmployeeBenefitsCost(employee);
 
 
-            paycheckCalc.CalculateDependentBenefitsCost(context, employee, familyMembers);
+            paycheckCalc.CalculateDependentBenefitsCost(employee, familyMembers);
 
-            paycheckCalc.CalculateTotalBenefitsCost(context, employee);
+            paycheckCalc.CalculateTotalBenefitsCost(employee);
 
-            paycheckCalc.CalculateSalaryInfo(context, employee);
+            paycheckCalc.CalculateSalaryInfo(employee);
 
-            paycheckCalc.CalculateYearlySalaryInfo(context, employee);
+            paycheckCalc.CalculateYearlySalaryInfo(employee);
             return Ok();
         }
     }

@@ -2,7 +2,6 @@
 using System.Linq;
 using Paylocity.Models;
 using Paylocity.Context;
-using Paylocity.Service;
 
 namespace Paylocity.DataLayer
 {
@@ -10,11 +9,15 @@ namespace Paylocity.DataLayer
     {
         public static List<Employee> employees = new List<Employee>();
         public static BenefitsContext context = new BenefitsContext();
-        PaycheckCalc paycheckCalc = new PaycheckCalc();
 
         public Employee GetEmployee(string employeeName)
         {
             return context.Employees.Where(e => e.EmployeeName == employeeName.ToUpper()).SingleOrDefault();
+        }
+
+        public Employee GetEmployeeByID(int id)
+        {
+            return context.Employees.Where(e => e.EmployeeId == id).SingleOrDefault();
         }
 
         public List<Employee> GetEmployees()

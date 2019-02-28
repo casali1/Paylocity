@@ -18,7 +18,7 @@ namespace Paylocity.Tests
             var context = new BenefitsContext();
             var paycheckCalc = new PaycheckCalc();
 
-            paycheckCalc.CalculateEmployeeBenefitsCost(context, "Ali");
+            paycheckCalc.CalculateEmployeeBenefitsCost("Ali");
 
             var employeeRec = context.Employees.Where(e => e.EmployeeName == "Ali").SingleOrDefault();
             Assert.AreEqual(900, employeeRec.BenefitCost);
@@ -36,7 +36,7 @@ namespace Paylocity.Tests
             var familyList = new List<string>();
             familyList.Add("Az");
             familyList.Add("JJ");
-            paycheckCalc.CalculateDependentBenefitsCost(context, "Ali", familyList);
+            paycheckCalc.CalculateDependentBenefitsCost("Ali", familyList);
 
             var dependentRecs = context.Dependents.Where(e => e.Employee.EmployeeName == "Ali");
             var dependentsArray = dependentRecs.ToArray();
@@ -57,7 +57,7 @@ namespace Paylocity.Tests
             context.Dependents.Add(new Dependent { DependentName = "JJ", BenefitCost = 500, Employee = employeeRec });
             context.SaveChanges();
 
-            paycheckCalc.CalculateTotalBenefitsCost(context, "Ali");
+            paycheckCalc.CalculateTotalBenefitsCost("Ali");
             employeeRec = context.Employees.Where(e => e.EmployeeName == "Ali").SingleOrDefault();
 
             Assert.AreEqual(71, employeeRec.TotalBenefitCosts);
@@ -73,7 +73,7 @@ namespace Paylocity.Tests
             context.Employees.Add(new Employee { EmployeeName = "Ali", TotalBenefitCosts = 71 });
             context.SaveChanges();
 
-            paycheckCalc.CalculateSalaryInfo(context, "Ali");
+            paycheckCalc.CalculateSalaryInfo("Ali");
             var employeeRec = context.Employees.Where(e => e.EmployeeName == "Ali").SingleOrDefault();
 
             Assert.AreEqual(2000, employeeRec.Salary);
@@ -89,7 +89,7 @@ namespace Paylocity.Tests
             context.Employees.Add(new Employee { EmployeeName = "Ali", YearlyTotalBenefitsCost = 1850 });
             context.SaveChanges();
 
-            paycheckCalc.CalculateYearlySalaryInfo(context, "Ali");
+            paycheckCalc.CalculateYearlySalaryInfo("Ali");
             var employeeRec = context.Employees.Where(e => e.EmployeeName == "Ali").SingleOrDefault();
 
             Assert.AreEqual(52000, employeeRec.YearlySalary);
