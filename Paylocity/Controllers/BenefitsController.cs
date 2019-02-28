@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Web.Http;
 using Paylocity.Models;
 using Paylocity.Service;
-using Paylocity.Context;
 using System.Web.Http.Cors;
 
 namespace Paylocity.Controllers
