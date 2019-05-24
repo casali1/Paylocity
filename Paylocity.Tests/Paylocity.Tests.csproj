@@ -914,6 +914,7 @@
     <None Include="Scripts\angular.min.js.map" />
     <None Include="Scripts\errors.json" />
     <None Include="Scripts\version.json" />
+    <Content Include="UseThisDataToHitTheEndPts.rtf" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Paylocity\Paylocity.csproj">
